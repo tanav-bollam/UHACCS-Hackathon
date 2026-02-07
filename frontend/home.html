@@ -1,115 +1,70 @@
-<!DOCTYPE html>
-<html class="dark" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>FocusMind - Home</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#135bec",
-                        "background-dark": "#0a0b0e",
-                        "card-dark": "#12171e",
-                    },
-                    fontFamily: {
-                        "sans": ["Inter", "sans-serif"]
-                    },
-                    borderRadius: {
-                        "xl": "1.25rem",
-                        "2xl": "2rem",
-                    },
-                },
-            },
-        }
-    </script>
-<style type="text/tailwindcss">
-        @layer utilities {
-            .card-hover {
-                @apply transition-all duration-300 hover:scale-[1.02] hover:bg-card-dark/80 active:scale-[0.98];
-            }
-        }
-        body {
-            background-color: #0a0b0e;
-        }
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FocusMind - Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+      body { font-family: Inter, sans-serif; background: radial-gradient(circle at top, #081328 0%, #030712 65%); }
     </style>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
   </head>
-<body class="bg-background-dark font-sans text-white antialiased min-h-screen">
-<div class="flex min-h-screen flex-col">
-<header class="flex h-20 shrink-0 items-center justify-between px-6 md:px-12">
-<div class="flex items-center gap-2">
-<div class="size-10 rounded-xl bg-primary flex items-center justify-center">
-<span class="material-symbols-outlined text-white text-2xl" style="font-variation-settings: 'FILL' 1;">bolt</span>
-</div>
-<span class="text-xl font-bold tracking-tight">FocusMind</span>
-</div>
-<div class="flex items-center gap-4">
-<div class="size-10 rounded-full border border-white/10 overflow-hidden bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA2Z657tY4Sg69_4RGHMvicp0ymNwRw6e3Jtmyaw_u3RYPrR0ZgBaV--mKJ_e4qLlcRDCd1EmuEzdSrc-jHkrVqHepbUWYotRSviLxdUv4vWj0NQEQwnBKbNloAr3CeEFN9HqTXmPWkaj4tL-4NVjHYo18RlHdn9KuXJu9k8z7Y1ZTALmsQyRZF_CYl1TuEeChjuxn8YysTTKCdjzhQP6Zk4jfnRSaKXvKbPXLhLuhH9QFLnU7joA7sjVFzeFCS9ZdKNyPcTuaIn_Y");'></div>
-</div>
-</header>
-<main class="flex flex-1 flex-col items-center justify-center p-6 md:p-12">
-<div class="w-full max-w-4xl">
-<div class="text-center mb-16">
-<h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-4">Welcome back, Alex.</h1>
-<p class="text-gray-400 text-lg md:text-xl font-light">What would you like to do next?</p>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-1 gap-6 max-w-2xl mx-auto w-full">
-<button class="flex items-center justify-between p-8 rounded-2xl bg-primary text-white card-hover shadow-2xl shadow-primary/20 w-full group text-left">
-<div class="flex items-center gap-6">
-<div class="size-16 rounded-2xl bg-white/20 flex items-center justify-center">
-<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">play_circle</span>
-</div>
-<div>
-<h2 class="text-2xl font-bold">Start New Session</h2>
-<p class="text-white/70 mt-1 font-medium">Begin focusing with eye-tracking</p>
-</div>
-</div>
-<span class="material-symbols-outlined text-3xl opacity-50 group-hover:opacity-100 transition-opacity">chevron_right</span>
-</button>
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-<button class="flex flex-col gap-6 p-8 rounded-2xl bg-card-dark border border-white/5 card-hover text-left group">
-<div class="size-12 rounded-xl bg-gray-800 flex items-center justify-center">
-<span class="material-symbols-outlined text-gray-400 group-hover:text-primary transition-colors">history</span>
-</div>
-<div class="flex justify-between items-end">
-<div>
-<h3 class="text-xl font-bold">Session History</h3>
-<p class="text-gray-500 text-sm mt-1">Review your past data</p>
-</div>
-<span class="material-symbols-outlined text-gray-600 group-hover:text-white transition-colors">arrow_forward</span>
-</div>
-</button>
-<button class="flex flex-col gap-6 p-8 rounded-2xl bg-card-dark border border-white/5 card-hover text-left group">
-<div class="size-12 rounded-xl bg-gray-800 flex items-center justify-center">
-<span class="material-symbols-outlined text-gray-400 group-hover:text-primary transition-colors">settings</span>
-</div>
-<div class="flex justify-between items-end">
-<div>
-<h3 class="text-xl font-bold">Settings</h3>
-<p class="text-gray-500 text-sm mt-1">App configuration</p>
-</div>
-<span class="material-symbols-outlined text-gray-600 group-hover:text-white transition-colors">arrow_forward</span>
-</div>
-</button>
-</div>
-</div>
-</div>
-</main>
-<footer class="py-12 flex justify-center opacity-20 hover:opacity-100 transition-opacity cursor-default">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-sm">auto_awesome</span>
-<span class="text-[10px] uppercase tracking-widest font-bold">Powered by FocusMind AI</span>
-</div>
-</footer>
-</div>
+  <body class="text-white min-h-screen">
+    <main class="max-w-md mx-auto px-6 py-8">
+      <header class="flex items-center justify-between mb-16">
+        <div class="flex items-center gap-3">
+          <div class="h-14 w-14 rounded-full bg-blue-600 grid place-items-center text-3xl font-bold">⚡</div>
+          <h1 class="text-5xl font-bold tracking-tight text-3xl">FocusMind</h1>
+        </div>
+        <div class="h-14 w-14 rounded-full bg-orange-100 text-black grid place-items-center text-3xl">🧑🏻</div>
+      </header>
 
-</body></html>
+      <section class="text-center mb-12">
+        <h2 class="text-6xl font-extrabold leading-tight">Welcome back,<br/>Alex.</h2>
+        <p class="text-slate-400 text-2xl mt-5">What would you like to do next?</p>
+      </section>
+
+      <div class="space-y-6">
+        <a href="/schedule" class="block rounded-[2rem] bg-blue-600 p-8 shadow-2xl shadow-blue-700/30">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-6">
+              <div class="h-24 w-24 rounded-3xl bg-blue-500 grid place-items-center text-5xl">▶️</div>
+              <div>
+                <h3 class="text-5xl leading-tight font-bold">Start New<br/>Session</h3>
+                <p class="text-blue-200 text-2xl mt-3">Begin focusing with<br/>eye-tracking</p>
+              </div>
+            </div>
+            <span class="text-6xl text-blue-300">›</span>
+          </div>
+        </a>
+
+        <a href="/history" class="block rounded-[2rem] bg-slate-900/90 border border-slate-800 p-8">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="h-20 w-20 rounded-3xl bg-slate-800 grid place-items-center text-4xl mb-8">🕘</div>
+              <h3 class="text-5xl font-bold">Session History</h3>
+              <p class="text-2xl text-slate-500 mt-3">Review your past data</p>
+            </div>
+            <span class="text-6xl text-slate-600">→</span>
+          </div>
+        </a>
+
+        <div class="block rounded-[2rem] bg-slate-900/90 border border-slate-800 p-8">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="h-20 w-20 rounded-3xl bg-slate-800 grid place-items-center text-4xl mb-8">⚙️</div>
+              <h3 class="text-5xl font-bold">Settings</h3>
+              <p class="text-2xl text-slate-500 mt-3">App configuration</p>
+            </div>
+            <span class="text-6xl text-slate-600">→</span>
+          </div>
+        </div>
+      </div>
+
+      <footer class="text-center text-slate-600 tracking-wider text-lg mt-20">✦ POWERED BY FOCUSMIND AI</footer>
+    </main>
+  </body>
+</html>

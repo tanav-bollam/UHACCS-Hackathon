@@ -8,9 +8,11 @@ and RL-based tutor recommendations. Ties together CV, timers, RL, and storage.
 import asyncio
 import uuid
 from datetime import datetime
+from pathlib import Path
 from typing import Optional
 
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 
 from analytics.metrics import calculate_productivity_score
@@ -27,8 +29,9 @@ from data.storage import (
     create_session,
     get_session,
     init_storage,
-    update_session,
+    list_sessions,
     save_schedule,
+    update_session,
 )
 from rl.agent import RLAgent
 from rl.environment import StudyEnvironment
@@ -51,6 +54,9 @@ study_env = StudyEnvironment()
 # CV components - use_stub=True so app runs without webcam (headless/servers)
 camera = CameraCapture(use_stub=True)
 attention_detector = AttentionDetector()
+
+# Frontend assets directory (ignore zip files; serve only extracted frontend dir)
+_FRONTEND_DIR = Path(__file__).resolve().parents[2] / "frontend"
 
 # Background task for periodic attention polling
 _attention_task: Optional[asyncio.Task] = None
@@ -100,17 +106,41 @@ class SessionStopRequest(BaseModel):
     session_id: str = Field(..., description="ID of session to stop")
 
 
-# --- Endpoints ---
+# --- Frontend page routes ---
+
+
+@app.get("/", include_in_schema=False)
+def home_page() -> FileResponse:
+    return FileResponse(_FRONTEND_DIR / "home.html")
+
+
+@app.get("/session", include_in_schema=False)
+def session_page() -> FileResponse:
+    return FileResponse(_FRONTEND_DIR / "session.html")
+
+
+@app.get("/schedule", include_in_schema=False)
+def schedule_page() -> FileResponse:
+    return FileResponse(_FRONTEND_DIR / "schedule.html")
+
+
+@app.get("/history", include_in_schema=False)
+def history_page() -> FileResponse:
+    return FileResponse(_FRONTEND_DIR / "history.html")
+
+
+# --- API Endpoints ---
+
+
+@app.get("/api/health")
+def health() -> dict:
+    """Health check / API info."""
+    return {"status": "ok", "app": "FocusTutor"}
 
 
 @app.post("/session/start", response_model=SessionStartResponse)
 def start_session() -> SessionStartResponse:
-    """
-    Start a new study session.
-
-    Creates session record, starts SessionTimer and ProductivityTimer.
-    Returns session_id for use in stop and recommendation.
-    """
+    """Start a new study session and store timers."""
     session_id = str(uuid.uuid4())
     session_timer = SessionTimer()
     productivity_timer = ProductivityTimer()
@@ -133,12 +163,7 @@ def start_session() -> SessionStartResponse:
 
 @app.post("/session/stop", response_model=SessionStopResponse)
 def stop_session(req: SessionStopRequest) -> SessionStopResponse:
-    """
-    End a study session.
-
-    Stops timers, computes productivity score, saves session to storage.
-    Example: ProductivityTimer is updated with is_attentive from attention detector.
-    """
+    """End a study session and store productivity summary."""
     session_id = req.session_id
     if session_id not in _active_sessions:
         raise HTTPException(status_code=404, detail="Session not found or already stopped")
@@ -182,30 +207,26 @@ def get_session_summary(session_id: str) -> SessionSummaryResponse:
     return SessionSummaryResponse(session=session)
 
 
+@app.get("/sessions")
+def get_recent_sessions(limit: int = 20) -> dict:
+    """Get recent sessions for history dashboard."""
+    safe_limit = max(1, min(limit, 100))
+    return {"sessions": [item.model_dump() for item in list_sessions(safe_limit)]}
+
+
 @app.post("/schedule")
 def submit_schedule(schedule: StudySchedule) -> dict:
-    """
-    Submit or update a study schedule.
-
-    Saves schedule to storage. Can be used to plan tasks and break intervals.
-    """
+    """Submit or update a study schedule."""
     save_schedule(schedule)
     return {"schedule_id": schedule.id, "message": "Schedule saved"}
 
 
 @app.get("/recommendation")
 def get_recommendation(session_id: Optional[str] = None) -> dict:
-    """
-    Fetch RL tutor recommendation.
-
-    Uses StudyEnvironment.get_state() and RLAgent.select_action() to return
-    a recommended action (e.g. continue, take_break).
-    TODO: Use real reward from user feedback (e.g. did they take the break?).
-    """
+    """Fetch RL tutor recommendation."""
     if session_id and session_id in _active_sessions:
         entry = _active_sessions[session_id]
         prod_timer: ProductivityTimer = entry["productivity_timer"]
-        sess_timer: SessionTimer = entry["session_timer"]
         total = prod_timer.total_elapsed
         productive = prod_timer.productive_seconds
         study_env.set_state(
@@ -219,12 +240,3 @@ def get_recommendation(session_id: Optional[str] = None) -> dict:
     next_state, reward, _ = study_env.step(action)
     rl_agent.update(state, action, reward, next_state)
     return {"action": action, "confidence": confidence}
-
-
-# --- Health check ---
-
-
-@app.get("/")
-def root() -> dict:
-    """Health check / API info."""
-    return {"status": "ok", "app": "FocusTutor"}

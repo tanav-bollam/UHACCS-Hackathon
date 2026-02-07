@@ -71,6 +71,7 @@ def get_session(session_id: str) -> Optional[Session]:
     if row is None:
         return None
     from datetime import datetime
+
     start = datetime.fromisoformat(row[1]) if row[1] else None
     end = datetime.fromisoformat(row[2]) if row[2] else None
     return Session(
@@ -81,6 +82,39 @@ def get_session(session_id: str) -> Optional[Session]:
         productivity_score=row[4] or 0,
         productive_seconds=row[5] or 0,
     )
+
+
+def list_sessions(limit: int = 20) -> list[Session]:
+    """Fetch most recent sessions for frontend history view."""
+    conn = _get_conn()
+    cur = conn.execute(
+        """
+        SELECT id, start_time, end_time, duration_minutes, productivity_score, productive_seconds
+        FROM sessions
+        ORDER BY COALESCE(end_time, start_time) DESC
+        LIMIT ?
+        """,
+        (limit,),
+    )
+    rows = cur.fetchall()
+
+    from datetime import datetime
+
+    sessions: list[Session] = []
+    for row in rows:
+        start = datetime.fromisoformat(row[1]) if row[1] else None
+        end = datetime.fromisoformat(row[2]) if row[2] else None
+        sessions.append(
+            Session(
+                id=row[0],
+                start_time=start,
+                end_time=end,
+                duration_minutes=row[3] or 0,
+                productivity_score=row[4] or 0,
+                productive_seconds=row[5] or 0,
+            )
+        )
+    return sessions
 
 
 def update_session(session: Session) -> Session:
