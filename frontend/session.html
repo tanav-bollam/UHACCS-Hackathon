@@ -1,112 +1,66 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FocusMind - Active Session</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <title>Session</title>
     <style>
-      body{font-family:Inter,sans-serif;background:linear-gradient(180deg,#0a1326,#0a162d 55%,#0a101c)}
-      .ring{background:conic-gradient(#2563eb var(--deg),#1e293b 0);}
+      body { font-family: Arial, sans-serif; margin: 2rem; max-width: 800px; }
+      nav a { margin-right: 1rem; }
+      button { margin-right: 0.5rem; padding: 0.6rem 1rem; }
+      pre { background: #f5f5f5; padding: 1rem; border-radius: 8px; }
     </style>
   </head>
-  <body class="text-white min-h-screen">
-    <main class="max-w-md mx-auto px-6 py-8 pb-10">
-      <header class="flex justify-between items-center mb-6">
-        <a href="/schedule" class="h-16 w-16 rounded-full bg-slate-700 grid place-items-center text-4xl">✕</a>
-        <div class="text-center">
-          <p class="text-slate-400 text-xl tracking-widest">CURRENT SESSION</p>
-          <h1 id="sessionTitle" class="text-5xl font-bold">Focused Study</h1>
-        </div>
-        <a href="/" class="h-16 w-16 rounded-full bg-slate-700 grid place-items-center text-4xl">⚙️</a>
-      </header>
+  <body>
+    <h1>Study Session</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/session">Session</a>
+      <a href="/schedule">Schedule</a>
+      <a href="/history">History</a>
+    </nav>
 
-      <div class="text-center mb-8">
-        <p id="clock" class="text-[7rem] leading-none font-extrabold">00:00</p>
-      </div>
+    <p>Start and stop a live session connected to the backend.</p>
+    <button id="startBtn">Start Session</button>
+    <button id="stopBtn">Stop Session</button>
+    <button id="recommendBtn">Get Recommendation</button>
+    <p>Current session ID: <strong id="sessionId">None</strong></p>
+    <pre id="output">No session events yet.</pre>
 
-      <div class="mx-auto mb-8 h-80 w-80 rounded-full p-4 ring" id="focusRing" style="--deg:331deg">
-        <div class="h-full w-full rounded-full bg-[#0b1426] flex items-center justify-center flex-col">
-          <p id="focusPct" class="text-7xl font-extrabold">92%</p>
-          <p class="text-slate-400 text-4xl">FOCUS SCORE</p>
-        </div>
-      </div>
-
-      <div class="rounded-full border border-blue-600 bg-blue-700/15 px-6 py-4 text-blue-400 text-4xl font-semibold text-center mb-8">● Deep Focus Detected</div>
-
-      <section class="rounded-3xl bg-slate-800/80 border border-slate-700 p-6 mb-8">
-        <p id="coachText" class="text-4xl leading-tight">"You're doing great! Keep this pace for 10 more minutes."</p>
-        <p class="text-slate-500 text-2xl mt-3 font-semibold">AI TUTOR AGENT</p>
-      </section>
-
-      <div class="grid grid-cols-2 gap-4">
-        <button id="pauseBtn" class="rounded-2xl bg-slate-700 py-5 text-5xl font-bold">⏸ Pause</button>
-        <button id="stopBtn" class="rounded-2xl bg-blue-600 py-5 text-5xl font-bold">⏹ End Session</button>
-      </div>
-
-      <pre id="out" class="hidden"></pre>
-    </main>
     <script>
-      const params = new URLSearchParams(location.search);
-      let sessionId = params.get('session_id');
-      let paused = false;
-      let elapsed = 0;
-      const clock = document.getElementById('clock');
-      const out = document.getElementById('out');
-      const focusPct = document.getElementById('focusPct');
-      const focusRing = document.getElementById('focusRing');
-      const coachText = document.getElementById('coachText');
+      let sessionId = null;
+      const sessionIdEl = document.getElementById('sessionId');
+      const output = document.getElementById('output');
 
-      function tick() {
-        if (!paused) elapsed += 1;
-        const m = String(Math.floor(elapsed / 60)).padStart(2,'0');
-        const s = String(elapsed % 60).padStart(2,'0');
-        clock.textContent = `${m}:${s}`;
-      }
-      setInterval(tick, 1000);
+      const setOutput = (data) => output.textContent = JSON.stringify(data, null, 2);
 
-      async function recommendation() {
-        if (!sessionId) return;
-        const res = await fetch(`/recommendation?session_id=${sessionId}`);
+      document.getElementById('startBtn').addEventListener('click', async () => {
+        const res = await fetch('/session/start', { method: 'POST' });
         const data = await res.json();
-        const pct = Math.max(60, Math.min(99, Math.round((data.confidence || 0.8) * 100)));
-        focusPct.textContent = `${pct}%`;
-        focusRing.style.setProperty('--deg', `${Math.round((pct/100)*360)}deg`);
-        coachText.textContent = data.action === 'take_break'
-          ? '"You’re still doing well. Take a short recharge break now."'
-          : '"You’re doing great! Keep this pace for 10 more minutes."';
-      }
-      setInterval(() => recommendation().catch(() => {}), 5000);
-
-      document.getElementById('pauseBtn').addEventListener('click', () => {
-        paused = !paused;
-        document.getElementById('pauseBtn').textContent = paused ? '▶ Resume' : '⏸ Pause';
+        sessionId = data.session_id;
+        sessionIdEl.textContent = sessionId;
+        setOutput(data);
       });
 
       document.getElementById('stopBtn').addEventListener('click', async () => {
-        if (!sessionId) {
-          window.location.href = '/schedule';
-          return;
-        }
+        if (!sessionId) return setOutput({ error: 'Start a session first.' });
         const res = await fetch('/session/stop', {
           method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({session_id: sessionId})
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ session_id: sessionId })
         });
         const data = await res.json();
-        out.textContent = JSON.stringify(data, null, 2);
-        window.location.href = '/history';
+        setOutput(data);
+        sessionId = null;
+        sessionIdEl.textContent = 'None';
       });
 
-      (async () => {
-        if (!sessionId) {
-          const res = await fetch('/session/start', {method: 'POST'});
-          const data = await res.json();
-          sessionId = data.session_id;
-        }
-        recommendation();
-      })();
+      document.getElementById('recommendBtn').addEventListener('click', async () => {
+        const query = sessionId ? `?session_id=${sessionId}` : '';
+        const res = await fetch(`/recommendation${query}`);
+        const data = await res.json();
+        setOutput(data);
+      });
     </script>
   </body>
 </html>

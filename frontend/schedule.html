@@ -1,101 +1,66 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FocusMind - Setup Session</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
-    <style>body{font-family:Inter,sans-serif;background:linear-gradient(180deg,#0b1730,#050b16 40%);} </style>
+    <title>Schedule</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 2rem; max-width: 800px; }
+      nav a { margin-right: 1rem; }
+      input { margin: 0.3rem 0; padding: 0.4rem; width: 100%; }
+      button { margin-top: 0.5rem; padding: 0.6rem 1rem; }
+      pre { background: #f5f5f5; padding: 1rem; border-radius: 8px; }
+    </style>
   </head>
-  <body class="text-white min-h-screen">
-    <main class="max-w-md mx-auto px-6 py-8 pb-40">
-      <header class="flex items-center justify-between mb-10">
-        <div class="h-14 w-14 rounded-full bg-orange-100 text-black grid place-items-center text-3xl">🧑🏻</div>
-        <div class="text-center">
-          <h1 class="text-5xl font-bold">Setup Session</h1>
-          <p class="text-green-400 text-xl tracking-widest">● AI TUTOR ONLINE</p>
-        </div>
-        <a href="/" class="h-14 w-14 rounded-2xl bg-slate-700 grid place-items-center text-3xl">⚙️</a>
-      </header>
+  <body>
+    <h1>Schedule</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/session">Session</a>
+      <a href="/schedule">Schedule</a>
+      <a href="/history">History</a>
+    </nav>
 
-      <section class="mb-8">
-        <h2 class="text-7xl font-extrabold">Ready to focus?</h2>
-        <p class="text-2xl text-slate-400 mt-3">Plan your session and calibrate eye-tracking.</p>
-      </section>
+    <p>Create a simple schedule and save it through the backend.</p>
+    <input id="scheduleId" placeholder="Schedule ID (e.g. weekly-plan)" />
+    <input id="taskName" placeholder="Task name" />
+    <input id="taskDuration" type="number" min="1" value="25" placeholder="Task duration (minutes)" />
+    <button id="saveBtn">Save Schedule</button>
 
-      <section class="grid grid-cols-2 gap-4 mb-8">
-        <div class="rounded-3xl bg-slate-800/80 p-5 border border-slate-700">
-          <p class="text-slate-400 text-2xl font-semibold">👁 AVG. FOCUS</p>
-          <p class="text-6xl font-bold mt-3">92%</p>
-        </div>
-        <div class="rounded-3xl bg-slate-800/80 p-5 border border-slate-700">
-          <p class="text-slate-400 text-2xl font-semibold">⏱ TODAY</p>
-          <p class="text-6xl font-bold mt-3">3h 15m</p>
-        </div>
-      </section>
-
-      <section class="rounded-3xl bg-slate-800/80 p-6 border border-slate-700 mb-8">
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="text-4xl font-bold tracking-wide">SESSION PLAN</h3>
-          <span class="text-blue-300 bg-blue-600/20 px-4 py-2 rounded-full text-lg">AI PARSING ON</span>
-        </div>
-        <textarea id="taskName" class="w-full h-44 rounded-2xl bg-[#0a1429] border border-slate-600 text-2xl p-5 placeholder:text-slate-500" placeholder="e.g., 45 min Calculus practice, 10 min break, 30 min History reading..."></textarea>
-        <div class="mt-4 flex items-center justify-between">
-          <div>
-            <p class="text-slate-400 uppercase text-xl">Eye Tracking</p>
-            <p class="text-3xl font-semibold">Calibrated & Ready</p>
-          </div>
-          <div class="text-3xl">📹</div>
-        </div>
-      </section>
-
-      <section class="mb-24">
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-5xl font-bold">RECENT SESSIONS</h3>
-          <a href="/history" class="text-blue-400 text-3xl">View All</a>
-        </div>
-        <div id="recent" class="space-y-3"></div>
-      </section>
-
-      <button id="startBtn" class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-3rem)] max-w-md bg-blue-600 text-white text-5xl font-bold py-6 rounded-3xl shadow-xl shadow-blue-800/40">▶ Start Study Session</button>
-    </main>
+    <pre id="output">No schedule submitted yet.</pre>
 
     <script>
-      let sessionId = null;
-      async function loadRecent() {
-        const box = document.getElementById('recent');
-        try {
-          const res = await fetch('/sessions?limit=2');
-          const data = await res.json();
-          box.innerHTML = (data.sessions || []).map((s) => `
-            <div class="rounded-2xl border border-slate-700 bg-slate-800/80 p-4 flex justify-between">
-              <div>
-                <p class="text-3xl font-bold">${s.id.slice(0, 8)}</p>
-                <p class="text-xl text-slate-400">${(s.duration_minutes || 0).toFixed(1)} mins</p>
-              </div>
-              <div class="text-right">
-                <p class="text-4xl font-bold text-green-400">${Math.round((s.productivity_score || 0) * 100)}%</p>
-                <p class="text-xl text-slate-400">Focus</p>
-              </div>
-            </div>`).join('') || '<p class="text-slate-400">No sessions yet.</p>';
-        } catch {
-          box.innerHTML = '<p class="text-red-400">Failed to load sessions.</p>';
+      document.getElementById('saveBtn').addEventListener('click', async () => {
+        const scheduleId = document.getElementById('scheduleId').value.trim();
+        const taskName = document.getElementById('taskName').value.trim();
+        const taskDuration = Number(document.getElementById('taskDuration').value || 25);
+        const output = document.getElementById('output');
+
+        if (!scheduleId || !taskName) {
+          output.textContent = JSON.stringify({ error: 'Schedule ID and task name are required.' }, null, 2);
+          return;
         }
-      }
-      document.getElementById('startBtn').addEventListener('click', async () => {
-        const taskName = document.getElementById('taskName').value.trim() || 'Focused Study';
-        await fetch('/schedule', {
+
+        const payload = {
+          id: scheduleId,
+          tasks: [{
+            id: crypto.randomUUID(),
+            name: taskName,
+            duration_minutes: taskDuration,
+            completed: false
+          }],
+          intervals: [25, 5],
+          recurrence: 'daily'
+        };
+
+        const res = await fetch('/schedule', {
           method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({id: 'quick-plan', tasks:[{id: crypto.randomUUID(), name: taskName, duration_minutes: 45, completed: false}], intervals:[45,10], recurrence:'daily'})
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
         });
-        const res = await fetch('/session/start', {method: 'POST'});
         const data = await res.json();
-        sessionId = data.session_id;
-        window.location.href = `/session?session_id=${sessionId}`;
+        output.textContent = JSON.stringify(data, null, 2);
       });
-      loadRecent();
     </script>
   </body>
 </html>
