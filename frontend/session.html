@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Active Study Tracker</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .timer-glow {
+            text-shadow: 0 0 20px rgba(19, 91, 236, 0.3);
+        }
+        .glass-card {
+            background: rgba(40, 46, 57, 0.4);
+            backdrop-filter: blur(8px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen flex flex-col overflow-hidden">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between px-6 pt-12 pb-4">
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-200 dark:bg-slate-800/50">
+<span class="material-symbols-outlined text-xl">close</span>
+</button>
+<div class="text-center">
+<p class="text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400">Current Session</p>
+<h1 class="text-lg font-bold">Calculus - Derivatives</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-200 dark:bg-slate-800/50">
+<span class="material-symbols-outlined text-xl">settings</span>
+</button>
+</header>
+<main class="flex-1 flex flex-col items-center justify-center px-6 gap-10">
+<!-- Main Timer Section -->
+<div class="flex flex-col items-center gap-2">
+<div class="flex gap-4 items-baseline">
+<div class="flex flex-col items-center">
+<span class="text-7xl font-extrabold tracking-tighter timer-glow">24</span>
+<span class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Min</span>
+</div>
+<span class="text-5xl font-light text-primary/50 -translate-y-4">:</span>
+<div class="flex flex-col items-center">
+<span class="text-7xl font-extrabold tracking-tighter timer-glow">58</span>
+<span class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Sec</span>
+</div>
+</div>
+</div>
+<!-- Productivity Meter Visualization -->
+<div class="w-full max-w-xs relative flex flex-col items-center">
+<!-- Circular Progress Indicator -->
+<div class="relative w-48 h-48 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-slate-200 dark:text-slate-800" cx="96" cy="96" fill="transparent" r="88" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-primary" cx="96" cy="96" fill="transparent" r="88" stroke="currentColor" stroke-dasharray="552.9" stroke-dashoffset="44.2" stroke-linecap="round" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-4xl font-bold">92%</span>
+<span class="text-xs font-medium text-slate-500 uppercase">Focus Score</span>
+</div>
+</div>
+<!-- Dynamic Status Label -->
+<div class="mt-6 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 flex items-center gap-2">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+</span>
+<span class="text-sm font-semibold text-primary">Deep Focus Detected</span>
+</div>
+</div>
+<!-- Tutor Agent Hint Card -->
+<div class="w-full glass-card border border-slate-200 dark:border-slate-800 p-5 rounded-2xl flex items-start gap-4">
+<div class="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-blue-400 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-white text-xl">auto_awesome</span>
+</div>
+<div class="flex flex-col gap-1">
+<p class="text-sm font-medium leading-relaxed">
+                    "You're doing great! Keep this pace for 10 more minutes until your scheduled brain break."
+                </p>
+<p class="text-[10px] font-bold uppercase text-slate-500 tracking-wider">AI Tutor Agent</p>
+</div>
+</div>
+<!-- Camera Tracking Status -->
+<div class="w-full @container">
+<div class="flex items-center justify-between glass-card border border-slate-200 dark:border-slate-800 p-4 rounded-xl">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg overflow-hidden bg-black relative">
+<!-- Simulated Camera Preview -->
+<div class="absolute inset-0 opacity-40 bg-gradient-to-b from-transparent to-black" data-alt="Subtle dark camera view of person studying"></div>
+<span class="material-symbols-outlined absolute inset-0 m-auto text-white/40 text-sm">videocam</span>
+</div>
+<div>
+<p class="text-sm font-bold">Eye-tracking</p>
+<p class="text-xs text-slate-500">Camera is active</p>
+</div>
+</div>
+<label class="relative flex h-[31px] w-[51px] cursor-pointer items-center rounded-full border-none bg-slate-300 dark:bg-slate-700 p-0.5 has-[:checked]:justify-end has-[:checked]:bg-primary">
+<div class="h-full w-[27px] rounded-full bg-white shadow-md"></div>
+<input checked="" class="invisible absolute" type="checkbox"/>
+</label>
+</div>
+</div>
+</main>
+<!-- Bottom Action Controls -->
+<footer class="p-6 pb-12 grid grid-cols-2 gap-4">
+<button class="flex h-14 items-center justify-center gap-2 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-900 dark:text-white font-bold transition-all active:scale-95">
+<span class="material-symbols-outlined">pause_circle</span>
+            Pause
+        </button>
+<button class="flex h-14 items-center justify-center gap-2 rounded-xl bg-primary text-white font-bold transition-all active:scale-95 shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined">stop_circle</span>
+            End Session
+        </button>
+</footer>
+</body></html>

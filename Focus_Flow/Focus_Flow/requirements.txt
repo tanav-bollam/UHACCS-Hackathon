@@ -1,0 +1,16 @@
+# FocusTutor Backend - Python dependencies
+# FastAPI REST API framework
+fastapi>=0.109.0
+
+# ASGI server for running the application
+uvicorn[standard]>=0.27.0
+
+# Data validation and schemas (included with FastAPI, explicit for clarity)
+pydantic>=2.5.0
+
+# Form data and file upload support
+python-multipart>=0.0.6
+
+# For CV and RL
+numpy>=1.26.0
+opencv-python-headless>=4.8.0
