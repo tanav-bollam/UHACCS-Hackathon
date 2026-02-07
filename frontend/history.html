@@ -1,294 +1,73 @@
-<!DOCTYPE html>
-<html class="dark" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Desktop Session Productivity Dashboard</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#135bec",
-                        "background-light": "#f6f6f8",
-                        "background-dark": "#0a0f18",
-                        "surface-dark": "#161c28",
-                        "surface-dark-lighter": "#1e2636",
-                        "accent-success": "#0bda5e",
-                    },
-                    fontFamily: {
-                        "display": ["Inter"]
-                    },
-                    borderRadius: {
-                        "DEFAULT": "0.4rem",
-                        "lg": "0.6rem",
-                        "xl": "1rem",
-                        "2xl": "1.5rem",
-                        "full": "9999px"
-                    },
-                },
-            },
-        }
-    </script>
-<style type="text/tailwindcss">
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #2d3748;
-            border-radius: 10px;
-        }
-        .stability-graph {
-            background: linear-gradient(90deg, rgba(19, 91, 236, 0.1) 0%, rgba(19, 91, 236, 0.02) 100%);
-            mask-image: linear-gradient(to top, black 0%, transparent 100%);
-        }
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>History</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 2rem; max-width: 900px; }
+      nav a { margin-right: 1rem; }
+      table { border-collapse: collapse; width: 100%; margin-top: 1rem; }
+      td, th { border: 1px solid #ddd; padding: 0.5rem; }
+      th { background: #f5f5f5; text-align: left; }
     </style>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
   </head>
-<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased font-display min-h-screen overflow-x-hidden">
-<div class="flex flex-col h-screen">
-<header class="flex items-center justify-between px-8 py-4 bg-white dark:bg-surface-dark border-b border-slate-200 dark:border-slate-800 z-50">
-<div class="flex items-center gap-4">
-<div class="size-10 bg-primary rounded-xl flex items-center justify-center">
-<span class="material-symbols-outlined text-white">analytics</span>
-</div>
-<div>
-<h1 class="text-xl font-bold tracking-tight">Session Productivity Dashboard</h1>
-<p class="text-xs text-slate-500 dark:text-slate-400">Post-session Analysis • Oct 24, 2023</p>
-</div>
-</div>
-<div class="flex items-center gap-3">
-<button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-100 dark:bg-surface-dark-lighter text-sm font-semibold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
-<span class="material-symbols-outlined text-lg">ios_share</span>
-                Export PDF
-            </button>
-<button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:opacity-90 transition-opacity">
-<span class="material-symbols-outlined text-lg">check</span>
-                Finish Review
-            </button>
-</div>
-</header>
-<main class="flex-1 flex overflow-hidden p-6 gap-6 max-w-[1600px] mx-auto w-full">
-<aside class="w-72 flex flex-col gap-6 shrink-0">
-<div class="flex flex-col gap-2 rounded-2xl p-6 bg-white dark:bg-surface-dark shadow-sm border border-slate-100 dark:border-slate-800 transition-all hover:border-primary/30">
-<div class="flex items-center justify-between mb-2">
-<span class="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-lg">schedule</span>
-<span class="text-accent-success text-xs font-bold flex items-center gap-0.5">
-<span class="material-symbols-outlined text-sm">trending_up</span> +12m
-                    </span>
-</div>
-<p class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-widest">Total Session</p>
-<p class="text-3xl font-black text-slate-900 dark:text-white mt-1">2h 15m</p>
-<div class="mt-4 h-1.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-<div class="h-full bg-primary" style="width: 100%;"></div>
-</div>
-</div>
-<div class="flex flex-col gap-2 rounded-2xl p-6 bg-white dark:bg-surface-dark shadow-sm border border-slate-100 dark:border-slate-800 transition-all hover:border-primary/30">
-<div class="flex items-center justify-between mb-2">
-<span class="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-lg">bolt</span>
-<span class="text-accent-success text-xs font-bold">80% Efficiency</span>
-</div>
-<p class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-widest">Focus Time</p>
-<p class="text-3xl font-black text-slate-900 dark:text-white mt-1">1h 48m</p>
-<div class="mt-4 h-1.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-<div class="h-full bg-accent-success" style="width: 80%;"></div>
-</div>
-</div>
-<div class="mt-auto p-4 rounded-xl bg-slate-50 dark:bg-surface-dark-lighter/50 border border-dashed border-slate-300 dark:border-slate-700">
-<p class="text-xs text-slate-500 dark:text-slate-400 text-center italic">"Consistency is the key to mastery. You've hit your daily goal for 5 consecutive days."</p>
-</div>
-</aside>
-<section class="flex-1 flex flex-col gap-6 overflow-y-auto custom-scrollbar pr-2">
-<div class="rounded-2xl bg-white dark:bg-surface-dark border border-slate-100 dark:border-slate-800 shadow-sm overflow-hidden">
-<div class="p-6 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
-<div>
-<h2 class="text-xl font-bold">Focus Score &amp; Stability</h2>
-<p class="text-sm text-slate-500">Real-time eye-tracking gaze analysis</p>
-</div>
-<div class="text-right">
-<span class="text-4xl font-black text-primary">82<span class="text-lg font-medium text-slate-400 uppercase tracking-tighter">/100</span></span>
-</div>
-</div>
-<div class="p-8">
-<div class="relative h-48 w-full bg-slate-50 dark:bg-slate-900/50 rounded-xl overflow-hidden mb-6 border border-slate-100 dark:border-slate-800">
-<div class="absolute inset-0 grid grid-cols-12 gap-0.5 opacity-20">
-<div class="border-r border-slate-400"></div><div class="border-r border-slate-400"></div><div class="border-r border-slate-400"></div><div class="border-r border-slate-400"></div><div class="border-r border-slate-400"></div><div class="border-r border-slate-400"></div><div class="border-r border-slate-400"></div><div class="border-r border-slate-400"></div><div class="border-r border-slate-400"></div><div class="border-r border-slate-400"></div><div class="border-r border-slate-400"></div><div></div>
-</div>
-<svg class="absolute inset-0 h-full w-full" preserveAspectRatio="none">
-<path d="M0 120 Q 50 80, 100 100 T 200 60 T 300 90 T 400 40 T 500 70 T 600 30 T 700 80 T 800 50 T 900 60 T 1000 40" fill="none" stroke="#135bec" stroke-width="3"></path>
-<path d="M0 120 Q 50 80, 100 100 T 200 60 T 300 90 T 400 40 T 500 70 T 600 30 T 700 80 T 800 50 T 900 60 T 1000 40 V 200 H 0 Z" fill="url(#grad1)" opacity="0.1"></path>
-<defs>
-<linearGradient id="grad1" x1="0%" x2="0%" y1="0%" y2="100%">
-<stop offset="0%" style="stop-color:#135bec;stop-opacity:1"></stop>
-<stop offset="100%" style="stop-color:#135bec;stop-opacity:0"></stop>
-</linearGradient>
-</defs>
-</svg>
-<div class="absolute top-4 right-4 flex gap-2">
-<span class="px-2 py-1 rounded bg-primary/20 text-primary text-[10px] font-bold uppercase">Gaze Stability</span>
-<span class="px-2 py-1 rounded bg-accent-success/20 text-accent-success text-[10px] font-bold uppercase">Optimal Posture</span>
-</div>
-</div>
-<div class="grid grid-cols-4 gap-6">
-<div class="p-4 rounded-xl bg-slate-50 dark:bg-surface-dark-lighter border border-slate-100 dark:border-slate-700/50">
-<p class="text-[10px] text-slate-500 uppercase font-bold mb-1">Eye-Stability</p>
-<div class="flex items-center justify-between">
-<p class="text-lg font-bold">High</p>
-<span class="material-symbols-outlined text-accent-success">visibility</span>
-</div>
-</div>
-<div class="p-4 rounded-xl bg-slate-50 dark:bg-surface-dark-lighter border border-slate-100 dark:border-slate-700/50">
-<p class="text-[10px] text-slate-500 uppercase font-bold mb-1">Distractions</p>
-<div class="flex items-center justify-between">
-<p class="text-lg font-bold text-orange-400">3 Detected</p>
-<span class="material-symbols-outlined text-orange-400">warning</span>
-</div>
-</div>
-<div class="p-4 rounded-xl bg-slate-50 dark:bg-surface-dark-lighter border border-slate-100 dark:border-slate-700/50">
-<p class="text-[10px] text-slate-500 uppercase font-bold mb-1">Blink Rate</p>
-<div class="flex items-center justify-between">
-<p class="text-lg font-bold">14 bpm</p>
-<span class="material-symbols-outlined text-blue-400">water_drop</span>
-</div>
-</div>
-<div class="p-4 rounded-xl bg-slate-50 dark:bg-surface-dark-lighter border border-slate-100 dark:border-slate-700/50">
-<p class="text-[10px] text-slate-500 uppercase font-bold mb-1">Avg Session</p>
-<div class="flex items-center justify-between">
-<p class="text-lg font-bold">45 min</p>
-<span class="material-symbols-outlined text-indigo-400">timer</span>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="rounded-2xl bg-white dark:bg-surface-dark border border-slate-100 dark:border-slate-800 shadow-sm p-6">
-<div class="flex items-center justify-between mb-8">
-<h2 class="text-xl font-bold tracking-tight">Subject Breakdown</h2>
-<button class="text-primary text-sm font-bold flex items-center gap-1 hover:underline">
-                        View Detailed Log <span class="material-symbols-outlined text-sm">open_in_new</span>
-</button>
-</div>
-<div class="space-y-8">
-<div class="group">
-<div class="flex justify-between items-center mb-2">
-<div class="flex items-center gap-3">
-<div class="size-2 rounded-full bg-primary"></div>
-<span class="font-bold text-slate-700 dark:text-slate-200">Advanced Mathematics</span>
-<span class="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary">High Focus</span>
-</div>
-<span class="text-sm font-medium text-slate-500">65 min <span class="mx-2 text-slate-300">|</span> 48% of total</span>
-</div>
-<div class="h-4 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-<div class="h-full bg-primary group-hover:brightness-110 transition-all" style="width: 65%;"></div>
-</div>
-</div>
-<div class="group">
-<div class="flex justify-between items-center mb-2">
-<div class="flex items-center gap-3">
-<div class="size-2 rounded-full bg-indigo-400"></div>
-<span class="font-bold text-slate-700 dark:text-slate-200">Cell Biology</span>
-<span class="text-xs px-2 py-0.5 rounded-full bg-indigo-400/10 text-indigo-400 text-opacity-80">Fatigue Detected</span>
-</div>
-<span class="text-sm font-medium text-slate-500">42 min <span class="mx-2 text-slate-300">|</span> 31% of total</span>
-</div>
-<div class="h-4 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-<div class="h-full bg-indigo-400 group-hover:brightness-110 transition-all" style="width: 42%;"></div>
-</div>
-</div>
-<div class="group">
-<div class="flex justify-between items-center mb-2">
-<div class="flex items-center gap-3">
-<div class="size-2 rounded-full bg-teal-400"></div>
-<span class="font-bold text-slate-700 dark:text-slate-200">Modern History</span>
-<span class="text-xs px-2 py-0.5 rounded-full bg-teal-400/10 text-teal-400">Flow State</span>
-</div>
-<span class="text-sm font-medium text-slate-500">28 min <span class="mx-2 text-slate-300">|</span> 21% of total</span>
-</div>
-<div class="h-4 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-<div class="h-full bg-teal-400 group-hover:brightness-110 transition-all" style="width: 28%;"></div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<aside class="w-80 flex flex-col shrink-0">
-<div class="relative overflow-hidden rounded-2xl h-full flex flex-col bg-gradient-to-br from-primary via-indigo-700 to-indigo-900 text-white shadow-xl">
-<div class="absolute -right-12 -top-12 size-64 opacity-5 pointer-events-none">
-<span class="material-symbols-outlined text-[256px]">psychology</span>
-</div>
-<div class="p-8 flex flex-col h-full relative z-10">
-<div class="flex items-center gap-4 mb-8">
-<div class="size-12 rounded-2xl bg-white/20 flex items-center justify-center backdrop-blur-md border border-white/20">
-<span class="material-symbols-outlined text-white text-3xl">smart_toy</span>
-</div>
-<div>
-<h3 class="font-bold text-xl leading-none">Tutor Insights</h3>
-<p class="text-indigo-200 text-xs mt-1">AI Session Analysis</p>
-</div>
-</div>
-<div class="space-y-6 flex-1">
-<div class="space-y-4">
-<p class="text-base leading-relaxed text-indigo-50 font-medium">
-                                "I've analyzed your eye-tracking patterns. Your focus was exceptional during <strong>History</strong>, but peaked too early in <strong>Mathematics</strong>."
-                            </p>
-<p class="text-sm text-white/80 leading-relaxed border-l-2 border-white/30 pl-4">
-                                Gaze wandering increased by 22% after the 45-minute mark. Your blink frequency suggests moderate cognitive load and dry eyes.
-                            </p>
-</div>
-<div class="bg-white/10 rounded-xl p-5 backdrop-blur-sm border border-white/20">
-<div class="flex items-center gap-2 mb-3">
-<span class="material-symbols-outlined text-indigo-200 text-sm">tips_and_updates</span>
-<p class="text-xs font-bold uppercase tracking-widest text-indigo-200">Personalized Strategy</p>
-</div>
-<p class="text-sm leading-relaxed mb-4">
-                                Tomorrow, switch to <strong>25-minute Pomodoro sprints</strong> for Math. Use the 5-minute breaks to look 20 feet away to reset eye fatigue.
-                            </p>
-<div class="flex gap-2">
-<div class="flex-1 h-1 bg-white/30 rounded-full overflow-hidden">
-<div class="h-full bg-white" style="width: 100%;"></div>
-</div>
-<div class="flex-1 h-1 bg-white/30 rounded-full"></div>
-<div class="flex-1 h-1 bg-white/30 rounded-full"></div>
-</div>
-</div>
-</div>
-<div class="mt-8 pt-8 border-t border-white/10">
-<button class="w-full py-4 bg-white text-primary font-bold rounded-xl text-sm shadow-xl hover:bg-indigo-50 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
-<span class="material-symbols-outlined text-xl">event_upcoming</span>
-                            Update Tomorrow's Schedule
-                        </button>
-<button class="w-full mt-3 py-3 text-white/70 hover:text-white text-xs font-semibold transition-colors">
-                            Dismiss Recommendations
-                        </button>
-</div>
-</div>
-</div>
-</aside>
-</main>
-<footer class="bg-white dark:bg-surface-dark px-8 py-3 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center text-xs text-slate-500 font-medium">
-<div class="flex gap-6">
-<span class="flex items-center gap-1.5"><span class="size-2 rounded-full bg-accent-success"></span> Analytics Verified</span>
-<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-xs">verified_user</span> Private Data Encryption</span>
-</div>
-<div class="flex gap-4">
-<button class="hover:text-primary transition-colors">Help Center</button>
-<button class="hover:text-primary transition-colors">Full History</button>
-<button class="hover:text-primary transition-colors">Settings</button>
-</div>
-</footer>
-</div>
+  <body>
+    <h1>Session History</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/session">Session</a>
+      <a href="/schedule">Schedule</a>
+      <a href="/history">History</a>
+    </nav>
 
-</body></html>
+    <button id="refreshBtn">Refresh</button>
+    <table>
+      <thead>
+        <tr>
+          <th>Session ID</th>
+          <th>Started</th>
+          <th>Ended</th>
+          <th>Duration (min)</th>
+          <th>Productivity</th>
+        </tr>
+      </thead>
+      <tbody id="rows">
+        <tr><td colspan="5">Loading...</td></tr>
+      </tbody>
+    </table>
+
+    <script>
+      async function loadSessions() {
+        const rows = document.getElementById('rows');
+        rows.innerHTML = '<tr><td colspan="5">Loading...</td></tr>';
+        try {
+          const res = await fetch('/sessions?limit=50');
+          const data = await res.json();
+          if (!data.sessions || data.sessions.length === 0) {
+            rows.innerHTML = '<tr><td colspan="5">No sessions yet.</td></tr>';
+            return;
+          }
+
+          rows.innerHTML = '';
+          for (const session of data.sessions) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td>${session.id}</td>
+              <td>${session.start_time || '-'}</td>
+              <td>${session.end_time || '-'}</td>
+              <td>${(session.duration_minutes || 0).toFixed(2)}</td>
+              <td>${Math.round((session.productivity_score || 0) * 100)}%</td>
+            `;
+            rows.appendChild(tr);
+          }
+        } catch (err) {
+          rows.innerHTML = `<tr><td colspan="5">Failed to load sessions: ${err.message}</td></tr>`;
+        }
+      }
+
+      document.getElementById('refreshBtn').addEventListener('click', loadSessions);
+      loadSessions();
+    </script>
+  </body>
+</html>
